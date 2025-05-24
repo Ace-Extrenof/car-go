@@ -69,5 +69,9 @@ func main() {
 		cargoDelivered[destinationPort.name] += order.storage
 		DisplayPortsStatus(ports)
 	}
+
 	DisplayCargoSummary(cargoDelivered)
+
+	fmt.Println("Press enter to exit...")
+	fmt.Scanln()
 }

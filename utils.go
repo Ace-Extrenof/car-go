@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"math/rand"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
 	"time"
-	"math/rand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -46,9 +47,20 @@ func takeOrder() Order {
 func DisplayPortsStatus(ports map[string]*Port) {
     fmt.Println("\n📦 Port Occupancy Status:")
     fmt.Println("----------------------------")
+	percentUsed := 0.0
     for name, port := range ports {
-        percentUsed := float64(port.shipsResidingInPort) / float64(port.spaceInPort) * 100
-        bar := strings.Repeat("█", int(percentUsed/5)) + strings.Repeat("░", 20-int(percentUsed/5))
+        percentUsed = float64(port.shipsResidingInPort) / float64(port.spaceInPort) * 100
+
+		blocks := int(math.Round(percentUsed / 5))
+		if percentUsed > 0 && blocks == 0 {
+			blocks = 1
+		}
+		if blocks > 20 {
+			blocks = 20
+		}
+
+        bar := strings.Repeat("█", blocks) + strings.Repeat(" ", 20-blocks)
+
 		title := cases.Title(language.English)
 		fmt.Printf("Port %-8s [%s] %2.0f%% (%d/%d)\n", title.String(name), bar, percentUsed, port.shipsResidingInPort, port.spaceInPort)
     }
@@ -113,7 +125,7 @@ func MainCycle() {
 	steps := make([]int, 30)	
 	for i := range steps {
 		loadingBar(i+1, 30, "Order", "Delivered", 25, "=")
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(300 * time.Millisecond)
 	}
 }
 // logic funcs
