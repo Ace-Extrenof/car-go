@@ -31,6 +31,8 @@ func main() {
 			orders = append(orders, order)
 		}
 	}
+
+	cargoDelivered := make(map[string]int)
 	
 	for i, order := range orders {
 		fmt.Printf("\n🚚 Processing Order #%d: %s\n", i+1, order.name)
@@ -64,7 +66,8 @@ func main() {
 		}
 
 		fmt.Printf("✅ Order '%s' delivered successfully to %s!\n", order.name, destinationPort.name)
+		cargoDelivered[destinationPort.name] += order.storage
 		DisplayPortsStatus(ports)
 	}
-
+	DisplayCargoSummary(cargoDelivered)
 }

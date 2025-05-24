@@ -55,6 +55,29 @@ func DisplayPortsStatus(ports map[string]*Port) {
     fmt.Println()
 }
 
+func DisplayCargoSummary(cargo map[string]int) {
+	fmt.Println("\n📊 Cargo Delivery Summary:")
+	fmt.Println("-------------------------------")
+
+	max := 0
+	for _, amount := range cargo {
+		if amount > max {
+			max = amount
+		}
+	}
+
+	for port, amount := range cargo {
+		barLen := 0
+		if max > 0 {
+			barLen = int(float64(amount) / float64(max) * 30)
+		}
+		bar := strings.Repeat("█", barLen)
+		title := cases.Title(language.English)
+		fmt.Printf("%-10s | %-30s (%d units)\n", title.String(port), bar, amount)
+	}
+}
+
+
 func ClearTerminal() {
 	switch runtime.GOOS {
 	case "darwin":
