@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"strings"
 	"time"
+	"math/rand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -104,20 +105,52 @@ func CreateOrder(name string, items int, current_location string, destination st
 	}
 }
 
-//initialise ports
-func initialisePorts() map[string]*Port {
-    ports := map[string]*Port{
-        "alpha":   {name: "alpha", spaceInPort: 5},
-        "beta":    {name: "beta", spaceInPort: 10},
-        "gamma":   {name: "gamma", spaceInPort: 15},
-        "delta":   {name: "delta", spaceInPort: 20},
-        "epsilon": {name: "epsilon", spaceInPort: 25},
-        "eta":     {name: "eta", spaceInPort: 30},
-        "theta":   {name: "theta", spaceInPort: 35},
-    }
+var samplePortNames = []string{"alpha", "beta", "gamma", "delta", "epsilon", "eta", "theta"}
+var sampleShipNames = []string{"Titan", "Orion", "Voyager", "Enterprise", "Falcon", "Nebula", "Pegasus"}
 
-    return ports
+func generateRandomOrder() Order {
+	name := fmt.Sprintf("order-%d", rand.Intn(1000))
+	storage := rand.Intn(1000)
+
+	from := samplePortNames[rand.Intn(len(samplePortNames))]
+	to := samplePortNames[rand.Intn(len(samplePortNames))]
+
+	for from == to {
+		to = samplePortNames[rand.Intn(len(samplePortNames))]
+	}
+
+	ship := sampleShipNames[rand.Intn(len(sampleShipNames))]
+
+	return CreateOrder(name, storage, from, to, ship)
 }
+
+//initialise ports
+// func initialisePorts() map[string]*Port {
+//     ports := map[string]*Port{
+//         "alpha":   {name: "alpha", spaceInPort: 5},
+//         "beta":    {name: "beta", spaceInPort: 10},
+//         "gamma":   {name: "gamma", spaceInPort: 15},
+//         "delta":   {name: "delta", spaceInPort: 20},
+//         "epsilon": {name: "epsilon", spaceInPort: 25},
+//         "eta":     {name: "eta", spaceInPort: 30},
+//         "theta":   {name: "theta", spaceInPort: 35},
+//     }
+//
+//     return ports
+// }
+
+func initialisePorts() map[string]*Port {
+    return map[string]*Port{
+        "alpha":   {name: "alpha", spaceInPort: 5, shipsResidingInPort: 0},
+        "beta":    {name: "beta", spaceInPort: 10, shipsResidingInPort: 0},
+        "gamma":   {name: "gamma", spaceInPort: 15, shipsResidingInPort: 0},
+        "delta":   {name: "delta", spaceInPort: 20, shipsResidingInPort: 0},
+        "epsilon": {name: "epsilon", spaceInPort: 25, shipsResidingInPort: 0},
+        "eta":     {name: "eta", spaceInPort: 30, shipsResidingInPort: 0},
+        "theta":   {name: "theta", spaceInPort: 35, shipsResidingInPort: 0},
+    }
+}
+
 
 // docking
 

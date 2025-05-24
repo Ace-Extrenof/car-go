@@ -9,6 +9,10 @@ import (
 
 func main() {
 	var numOrders int
+	var auto string
+	fmt.Print("Randomised orders? (y/n) > ")
+	fmt.Scanf("%s", &auto)
+
 	fmt.Print("How many orders would you like to process? > ")
 	fmt.Scanf("%d", &numOrders)
 
@@ -17,8 +21,15 @@ func main() {
 	orders := make([]Order, 0)
 	for i := 0; i < numOrders; i++ {
 		fmt.Printf("\n📦 Enter details for Order #%d\n", i+1)
-		order := takeOrder()
-		orders = append(orders, order)
+		if strings.ToLower(auto) == "y" {
+			order := generateRandomOrder()
+			fmt.Printf("Auto-created order: %+v\n", order)
+
+			orders = append(orders, order)
+		} else {
+			order := takeOrder()
+			orders = append(orders, order)
+		}
 	}
 	
 	for i, order := range orders {
