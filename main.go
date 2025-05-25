@@ -10,6 +10,7 @@ import (
 func main() {
 	var numOrders int
 	var auto string
+	ClearTerminal()
 	fmt.Print("Randomised orders? (y/n) > ")
 	fmt.Scanf("%s", &auto)
 
@@ -26,6 +27,9 @@ func main() {
 			fmt.Printf("Auto-created order: %+v\n", order)
 
 			orders = append(orders, order)
+			fmt.Println("\nEnter to continue...")
+			fmt.Scanln()
+			ClearTerminal()
 		} else {
 			order := takeOrder()
 			orders = append(orders, order)
